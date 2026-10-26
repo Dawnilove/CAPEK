@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAPEK</title>
+<meta name="description" content="부품을 조립해 로봇을 만들고 강화학습으로 과제를 달성시키는 Windows 샌드박스. 설치파일 하나로 시작.">
+<style>
+  :root { --bg:#0E1014; --panel:#151820; --line:#2A303C; --text:#E7E9EE; --sub:#A0A8B8; --accent:#A3E06B; --accent-text:#0E1014; --blue:#6CB6FF; }
+  @media (prefers-color-scheme: light) { :root { --bg:#F6F7F9; --panel:#FFFFFF; --line:#D9DDE4; --text:#14171C; --sub:#4A5160; --accent:#2F7D0F; --accent-text:#FFFFFF; --blue:#1D6FD0; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 "Segoe UI","Malgun Gothic",sans-serif; }
+  header { border-bottom:1px solid var(--line); }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+  nav { display:flex; align-items:center; gap:20px; height:56px; }
+  nav .brand { font-weight:700; letter-spacing:.12em; margin-right:auto; display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; }
+  nav a { color:var(--sub); text-decoration:none; font-size:15px; }
+  nav a:hover { color:var(--text); }
+  .hero { padding: 72px 0 40px; }
+  h1 { font-size: clamp(40px, 8vw, 64px); letter-spacing:.06em; margin: 0 0 12px; line-height:1.1; }
+  h1 span { color: var(--accent); }
+  .lead { color: var(--sub); font-size: 20px; margin: 0 0 30px; max-width: 640px; }
+  .btn { display:inline-block; background:var(--accent); color:var(--accent-text); padding:13px 26px; border-radius:6px; text-decoration:none; font-weight:700; }
+  .btn.ghost { background:transparent; color:var(--text); border:1px solid var(--line); margin-left:10px; font-weight:500; }
+  .btn:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .meta { color:var(--sub); font-size:14px; margin-top:16px; }
+  .shot { display:block; width:100%; border:1px solid var(--line); border-radius:10px; margin: 8px 0 0; }
+  h2 { font-size: 26px; margin: 64px 0 16px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
+  .card b { display:block; margin-bottom:4px; }
+  .card p { margin:0; color:var(--sub); font-size:15px; }
+  ol, ul { padding-left: 22px; } li { margin: 6px 0; }
+  code { background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:1px 6px; font-size:.92em; }
+  .note { color: var(--sub); font-size: 14px; }
+  footer { border-top:1px solid var(--line); margin-top:72px; padding:24px 0 40px; color:var(--sub); font-size:14px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="#">
+    <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4 56 18v28L32 60 8 46V18z" fill="#151820" stroke="#A3E06B" stroke-width="3" stroke-linejoin="round"/><path d="M8 18 32 32 56 18M32 32v28" fill="none" stroke="#2A303C" stroke-width="2.5"/><path d="M32 32 44 14" stroke="#A3E06B" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="32" r="7" fill="#A3E06B"/><circle cx="32" cy="32" r="2.5" fill="#0E1014"/><circle cx="46" cy="12" r="4.5" fill="#6CB6FF"/></svg>
+    CAPEK
+  </a>
+  <a href="#features">기능</a><a href="#install">설치</a><a href="#privacy">개인정보</a>
+  <a href="https://github.com/Dawnilove/CAPEK">GitHub</a>
+</nav></div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>로봇을 <span>조립</span>하고,<br>학습시키세요.</h1>
+    <p class="lead">부품을 이어 붙여 로봇을 만들고, 강화학습으로 과제를 달성시키는 샌드박스. 파이썬도 GPU도 필요 없어요.</p>
+    <a class="btn" href="https://github.com/Dawnilove/CAPEK/releases/latest">CAPEK-Setup.exe 내려받기</a>
+    <a class="btn ghost" href="#features">기능 보기</a>
+    <p class="meta">Windows 10/11 64비트 · 약 150 MB · 관리자 권한 불필요</p>
+    <img class="shot" src="images/assembly.png" alt="CAPEK 조립 화면: 부품 트리, 3D 미리보기, 조립 검사 결과" loading="lazy">
+  </section>
+
+  <section id="features">
+    <h2>할 수 있는 일</h2>
+    <div class="grid">
+      <div class="card"><b>🧩 조립</b><p>링크·관절·바퀴·다리·그리퍼를 이어 붙이고 3D로 확인해요. 잘못 붙이면 이유를 알려 줘요.</p></div>
+      <div class="card"><b>🎯 과제</b><p>팔 뻗기, 이동, 균형, 걷기, 집어서 옮기기. 배치 범위와 성공 조건을 정해요.</p></div>
+      <div class="card"><b>📈 학습</b><p>버튼 하나로 강화학습을 시작해요. 곡선이 실시간으로 그려지고 창을 닫아도 계속돼요.</p></div>
+      <div class="card"><b>🗂 모니터</b><p>학습 기록을 모아 비교하고, 설정이 어디가 달라졌는지 봐요.</p></div>
+      <div class="card"><b>🎬 3D 재생</b><p>끝난 학습을 3D로 다시 봐요.</p></div>
+      <div class="card"><b>🩺 자동 진단</b><p>학습이 막히면 원인 후보를 알려 주고, 안전한 것은 스스로 고쳐요.</p></div>
+      <div class="card"><b>🤖 AI 조언 (선택)</b><p>분석가 2명이 따로 기록을 보고, 의견이 같은 것만 제안해요. 적용은 내가 확인한 뒤에만.</p></div>
+      <div class="card"><b>💾 내 PC에 저장</b><p>모든 기록은 <code>문서\CAPEK</code>에 저장돼요.</p></div>
+    </div>
+    <img class="shot" src="images/scene.png" alt="CAPEK 장면 화면: 과제 선택과 목표 배치 범위" loading="lazy" style="margin-top:20px">
+  </section>
+
+  <section id="install">
+    <h2>설치</h2>
+    <ol>
+      <li><a href="https://github.com/Dawnilove/CAPEK/releases/latest">Releases</a>에서 <code>CAPEK-Setup.exe</code>를 내려받아요.</li>
+      <li>더블클릭해서 설치해요.</li>
+      <li>"알 수 없는 게시자" 경고가 뜨면 <strong>추가 정보 → 실행</strong>을 눌러요. 코드 서명이 아직 없어요.</li>
+      <li>시작 메뉴에서 <strong>CAPEK</strong>을 열어요.</li>
+    </ol>
+    <p class="note">메모리 8 GB 이상 권장 · 디스크 약 1 GB · 제거해도 학습 기록(<code>문서\CAPEK</code>)은 남아요.</p>
+  </section>
+
+  <section id="privacy">
+    <h2>개인정보와 데이터</h2>
+    <p>학습, 조립, 재생은 모두 이 PC 안에서 돌아요. 인터넷은 <strong>AI 조언</strong>을 쓸 때만 써요. 그때 학습 설정과 지표 요약만 Anthropic으로 전송되고, 파일 경로와 API 키는 보내지 않아요. 비용은 본인의 API 계정에 청구되고, 호출 전에 예상 비용을 확인받아요.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  개인 학습·교육·연구 목적은 무료예요. 소스 코드는 공개하지 않아요. 문의와 오류 보고는 <a href="https://github.com/Dawnilove/CAPEK/issues">이슈</a>에 남겨 주세요.
+</div></footer>
+</body>
+</html>
