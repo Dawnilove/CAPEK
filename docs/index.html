@@ -3,97 +3,416 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CAPEK</title>
-<meta name="description" content="부품을 조립해 로봇을 만들고 강화학습으로 과제를 달성시키는 Windows 샌드박스. 설치파일 하나로 시작.">
+<title>CAPEK — 로봇을 조립하고 학습시키는 샌드박스</title>
+<meta name="description" content="부품을 이어 붙여 로봇을 만들고, 강화학습으로 과제를 달성시켜요. 조립·장면·학습·모니터·3D 재생이 한 앱에. 파이썬도 GPU도 필요 없어요.">
+<meta property="og:title" content="CAPEK — 로봇을 조립하고 학습시키는 샌드박스">
+<meta property="og:description" content="조립하고, 학습시키고, 달성시키세요.">
+<meta property="og:image" content="banner.png">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
-  :root { --bg:#0E1014; --panel:#151820; --line:#2A303C; --text:#E7E9EE; --sub:#A0A8B8; --accent:#A3E06B; --accent-text:#0E1014; --blue:#6CB6FF; }
-  @media (prefers-color-scheme: light) { :root { --bg:#F6F7F9; --panel:#FFFFFF; --line:#D9DDE4; --text:#14171C; --sub:#4A5160; --accent:#2F7D0F; --accent-text:#FFFFFF; --blue:#1D6FD0; } }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.7 "Segoe UI","Malgun Gothic",sans-serif; }
-  header { border-bottom:1px solid var(--line); }
-  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
-  nav { display:flex; align-items:center; gap:20px; height:56px; }
-  nav .brand { font-weight:700; letter-spacing:.12em; margin-right:auto; display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; }
-  nav a { color:var(--sub); text-decoration:none; font-size:15px; }
-  nav a:hover { color:var(--text); }
-  .hero { padding: 72px 0 40px; }
-  h1 { font-size: clamp(40px, 8vw, 64px); letter-spacing:.06em; margin: 0 0 12px; line-height:1.1; }
-  h1 span { color: var(--accent); }
-  .lead { color: var(--sub); font-size: 20px; margin: 0 0 30px; max-width: 640px; }
-  .btn { display:inline-block; background:var(--accent); color:var(--accent-text); padding:13px 26px; border-radius:6px; text-decoration:none; font-weight:700; }
-  .btn.ghost { background:transparent; color:var(--text); border:1px solid var(--line); margin-left:10px; font-weight:500; }
-  .btn:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .meta { color:var(--sub); font-size:14px; margin-top:16px; }
-  .shot { display:block; width:100%; border:1px solid var(--line); border-radius:10px; margin: 8px 0 0; }
-  h2 { font-size: 26px; margin: 64px 0 16px; }
-  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
-  .card b { display:block; margin-bottom:4px; }
-  .card p { margin:0; color:var(--sub); font-size:15px; }
-  ol, ul { padding-left: 22px; } li { margin: 6px 0; }
-  code { background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:1px 6px; font-size:.92em; }
-  .note { color: var(--sub); font-size: 14px; }
-  footer { border-top:1px solid var(--line); margin-top:72px; padding:24px 0 40px; color:var(--sub); font-size:14px; }
-  a { color: var(--accent); }
+:root{--bg:#161a22;--bg2:#1b2029;--panel:#232a36;--line:#2f3747;--text:#e9edf4;--sub:#9ba6b9;--accent:#a3e06b;--accent-ink:#17210c;--blue:#6cb6ff;--soft:color-mix(in srgb,var(--accent) 13%,transparent)}
+@media (prefers-color-scheme:light){:root{--bg:#f7f8f3;--bg2:#eef1e6;--panel:#fff;--line:#dde2d3;--text:#1c2230;--sub:#58627a;--accent:#4f8a10;--accent-ink:#fff;--blue:#2f7fd1}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:68px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 "Pretendard Variable","Pretendard","Segoe UI","Malgun Gothic",system-ui,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+img{max-width:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* 상단 메뉴 */
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.04em;color:var(--text);text-decoration:none;flex:none}
+.brand img{width:26px;height:26px;border-radius:7px}
+.brand b{color:var(--accent)}
+.links{display:flex;gap:18px;overflow-x:auto;white-space:nowrap;font-size:14px;flex:1;scrollbar-width:none}
+.links a{color:var(--sub);text-decoration:none}
+.links a:hover{color:var(--accent)}
+nav .btn{padding:7px 14px;font-size:14px;flex:none}
+
+/* 버튼 */
+.btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;border:1px solid var(--line);color:var(--text);background:var(--panel);transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* 히어로 */
+.hero{text-align:center;padding:56px 0 8px;background:radial-gradient(ellipse 50% 40% at 50% 0,var(--soft),transparent 70%)}
+.ver{display:inline-block;color:var(--accent);font-size:13px;font-weight:700;padding:3px 12px;border:1px solid var(--accent);border-radius:999px}
+h1{font-size:clamp(32px,6.2vw,58px);margin:18px 0 14px;line-height:1.2;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{color:var(--sub);font-size:clamp(16px,2.2vw,19px);max-width:620px;margin:0 auto 28px}
+.lead b{color:var(--text)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.cta .btn.main{font-size:18px;padding:15px 32px}
+.cta .btn{font-size:17px;padding:15px 24px}
+.others{margin:14px 0 0;font-size:14px;color:var(--sub)}
+.others a{color:var(--sub)}
+.others a:hover{color:var(--accent)}
+.facts{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;padding:0;margin:30px 0 0;color:var(--sub);font-size:14px}
+.facts li{margin:0}
+.facts b{display:block;color:var(--text);font-size:20px;line-height:1.3}
+.hero .shot{margin-top:40px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+img.shot{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line)}
+
+/* 공통 섹션 */
+section{padding:64px 0 0}
+.band{background:var(--bg2);padding:56px 0;margin-top:64px}
+.band section{padding-top:0}
+.eyebrow{display:block;color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:6px}
+h2{font-size:clamp(24px,3.6vw,32px);margin:0 0 10px;line-height:1.3;letter-spacing:-.01em}
+.sec-lead{color:var(--sub);margin:0 0 26px;max-width:640px}
+h3{font-size:18px;margin:24px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 6px;font-size:17px}
+.card p{margin:0;color:var(--sub);font-size:15px}
+.ico{font-size:22px;line-height:1;display:block;margin-bottom:10px}
+
+/* 왜 CAPEK */
+.why .card{padding:24px}
+.why .ico{font-size:28px}
+.why h3{font-size:19px}
+
+/* 보통은 → CAPEK */
+.vs{display:grid;gap:8px;margin-top:8px}
+.vs-row{display:grid;grid-template-columns:150px 1fr 24px 1fr;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15px}
+.vs-row .task{font-weight:700}
+.vs-row .old{color:var(--sub)}
+.vs-row .arrow{color:var(--accent);text-align:center}
+.vs-row .new{font-weight:600}
+.vs-head{background:none;border:0;padding:0 16px;font-size:13px;color:var(--sub)}
+.vs-head .new{color:var(--accent);font-weight:700}
+
+/* 화면 소개 */
+.spot{display:grid;grid-template-columns:1.35fr 1fr;gap:36px;align-items:center;margin-top:44px}
+.spot:nth-child(even) figure{order:2}
+.spot figure{margin:0}
+.spot h3{font-size:22px;margin:0 0 10px}
+.spot ul{padding:0;margin:0;list-style:none;color:var(--sub)}
+.spot li{padding-left:22px;position:relative;margin:7px 0}
+.spot li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700}
+
+/* 전체 기능 */
+.group{margin-top:34px}
+.group > h3{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:19px;margin:0 0 12px}
+.group > h3 span{font-size:14px;font-weight:400;color:var(--sub)}
+
+/* AI 예시 대화 */
+.chat{display:grid;gap:10px;margin:0 0 22px}
+.bubble{justify-self:start;max-width:90%;background:var(--soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:16px 16px 16px 4px;padding:10px 16px;font-weight:600}
+.bubble.reply{justify-self:end;background:var(--panel);border-color:var(--line);border-radius:16px 16px 4px 16px;font-weight:500;color:var(--sub)}
+
+/* 설치 */
+.steps{list-style:none;counter-reset:s;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:0}
+.steps > li{counter-increment:s;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:0;color:var(--sub);font-size:15px}
+.steps > li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:800;margin-bottom:10px}
+.steps b{color:var(--text)}
+.steps > li > b:first-child{display:block;font-size:17px;margin-bottom:4px}
+.steps ul{padding-left:18px;margin:6px 0 0}
+
+/* 기타 */
+figure{margin:0}
+figcaption{color:var(--sub);font-size:14px;margin-top:6px}
+ol,ul{padding-left:22px}
+li{margin:6px 0}
+code,pre,kbd{font-family:"JetBrains Mono",Consolas,monospace;font-size:14px}
+code{overflow-wrap:anywhere}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;margin:10px 0}
+.table{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--sub);font-weight:600}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}
+summary{cursor:pointer;font-weight:700}
+details > :last-child{margin-bottom:0}
+.note{color:var(--sub);font-size:14px}
+.callout{background:var(--soft);border-left:3px solid var(--accent);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:15px}
+#versions li{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;border-bottom:1px solid var(--line);padding:8px 0;margin:0}
+#versions ul{list-style:none;padding:0;margin:0}
+#versions b{min-width:64px}
+.final{text-align:center;padding:64px 0}
+.final h2{margin-bottom:8px}
+.final p{color:var(--sub);margin:0 0 24px}
+footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--sub);font-size:14px;text-align:center}
+
+@media (max-width:760px){
+  nav .wrap{gap:14px}
+  .brand span{display:none}
+  .vs-row{grid-template-columns:1fr;gap:2px}
+  .vs-row .arrow{display:none}
+  .vs-row .old::before{content:"보통은 · ";font-size:13px}
+  .vs-row .new::before{content:"CAPEK · ";color:var(--accent);font-size:13px}
+  .vs-head{display:none}
+  .spot{grid-template-columns:1fr;gap:16px}
+  .spot:nth-child(even) figure{order:0}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 </head>
 <body>
-<header><div class="wrap"><nav>
-  <a class="brand" href="#">
-    <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><path d="M8 19 32 5 56 19 32 33z" fill="#151820"/><path d="M8 19 32 33v26L8 45z" fill="#151820"/><path d="M32 33 56 19v26L32 59z" fill="#151820"/><path d="M32 5 56 19v26L32 59 8 45V19z" fill="none" stroke="#A3E06B" stroke-width="7" stroke-linejoin="round"/><path d="M22 44 38 42 57 9" fill="none" stroke="#151820" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 44 38 42 57 9" fill="none" stroke="#A3E06B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22" cy="44" r="9" fill="#A3E06B"/><circle cx="22" cy="44" r="3" fill="#151820"/><circle cx="38" cy="42" r="6" fill="#A3E06B"/><circle cx="56" cy="10" r="7" fill="#6CB6FF" stroke="#151820" stroke-width="2"/></svg>
-    CAP<span style="color:#A3E06B">EK</span>
-  </a>
-  <a href="#features">기능</a><a href="#install">설치</a><a href="#privacy">개인정보</a>
-  <a href="https://github.com/Dawnilove/CAPEK">GitHub</a>
-</nav></div></header>
+<nav><div class="wrap">
+  <a class="brand" href="#top"><img src="icon.png" alt=""><span>CAP<b>EK</b></span></a>
+  <div class="links">
+    <a href="#why">왜 CAPEK</a><a href="#screens">화면</a><a href="#features">기능</a><a href="#ai">AI 조언</a>
+    <a href="#install">설치</a><a href="#start">시작하기</a><a href="#help">문제 해결</a><a href="#versions">이전 버전</a>
+  </div>
+  <a class="btn main" href="https://github.com/Dawnilove/CAPEK/releases/latest/download/CAPEK-Setup.exe">다운로드</a>
+</div></nav>
 
-<main class="wrap">
-  <section class="hero">
-    <h1>로봇을 <span>조립</span>하고,<br>학습시키세요.</h1>
-    <p class="lead">부품을 이어 붙여 로봇을 만들고, 강화학습으로 과제를 달성시키는 샌드박스. 파이썬도 GPU도 필요 없어요.</p>
-    <a class="btn" href="https://github.com/Dawnilove/CAPEK/releases/latest">CAPEK-Setup.exe 내려받기</a>
-    <a class="btn ghost" href="#features">기능 보기</a>
-    <p class="meta">Windows 10/11 64비트 · 약 150 MB · 관리자 권한 불필요</p>
-    <img class="shot" src="images/assembly.png" alt="CAPEK 조립 화면: 부품 트리, 3D 미리보기, 조립 검사 결과" loading="lazy">
-  </section>
-
-  <section id="features">
-    <h2>할 수 있는 일</h2>
-    <div class="grid">
-      <div class="card"><b>🧩 조립</b><p>링크·관절·바퀴·다리·그리퍼를 카드로 이어 붙이고 3D로 확인해요. 고른 부품은 점선 상자로, 작업 부위와 목표는 이름표로 보여요. 잘못 붙이면 이유를 알려 줘요.</p></div>
-      <div class="card"><b>🏠 프로젝트</b><p>첫 화면에서 설정과 최근 학습을 고르고, 새 조립을 시작해요.</p></div>
-      <div class="card"><b>🎯 과제</b><p>팔 뻗기, 이동, 균형, 걷기, 집어서 옮기기. 배치 범위와 성공 조건을 정해요.</p></div>
-      <div class="card"><b>📈 학습</b><p>버튼 하나로 강화학습을 시작해요. 진행 패널과 곡선, 병렬 환경 미리보기가 실시간으로 움직이고 창을 닫아도 계속돼요.</p></div>
-      <div class="card"><b>🗂 모니터</b><p>학습 기록을 모아 비교하고, 설정이 어디가 달라졌는지 봐요.</p></div>
-      <div class="card"><b>🎬 3D 재생</b><p>끝난 학습을 3D로 다시 봐요.</p></div>
-      <div class="card"><b>🩺 자동 진단</b><p>학습이 막히면 원인 후보를 알려 주고, 안전한 것은 스스로 고쳐요.</p></div>
-      <div class="card"><b>🤖 AI 조언 (선택)</b><p>분석가 2명이 따로 기록을 보고, 의견이 같은 것만 제안해요. 적용은 내가 확인한 뒤에만.</p></div>
-      <div class="card"><b>💾 내 PC에 저장</b><p>모든 기록은 <code>문서\CAPEK</code>에 저장돼요.</p></div>
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="ver" id="ver">최신 버전</span>
+    <h1>로봇을 <em>조립</em>하고,<br>학습시키고, 달성시키세요.</h1>
+    <p class="lead">부품을 이어 붙여 로봇을 만들고, <b>강화학습으로 과제를 달성</b>시키는 샌드박스.<br>파이썬도, 개발 도구도, <b>GPU도 필요 없어요.</b></p>
+    <div class="cta">
+      <a class="btn main" href="https://github.com/Dawnilove/CAPEK/releases/latest/download/CAPEK-Setup.exe">⬇ Windows용 무료 다운로드</a>
+      <a class="btn" href="#screens">화면 둘러보기</a>
     </div>
-    <img class="shot" src="images/train.png" alt="CAPEK 학습 화면: 병렬 환경 6칸 미리보기, 성공률·보상 곡선, 진행 패널" loading="lazy" style="margin-top:20px">
-    <img class="shot" src="images/project.png" alt="CAPEK 프로젝트 화면: 지금 열린 설정, 설정 목록, 최근 학습" loading="lazy" style="margin-top:20px">
-    <img class="shot" src="images/scene.png" alt="CAPEK 장면 화면: 과제 선택과 목표 배치 범위" loading="lazy" style="margin-top:20px">
-  </section>
+    <p class="others">설치파일 하나 · 약 150 MB · <a href="https://github.com/Dawnilove/CAPEK/releases/latest">릴리스 노트 보기</a></p>
+    <ul class="facts">
+      <li><b>설치 한 번</b>파이썬·GPU 불필요</li>
+      <li><b>한 앱</b>조립 · 학습 · 모니터 · 3D 재생</li>
+      <li><b>5가지 과제</b>뻗기 · 이동 · 균형 · 걷기 · 집기</li>
+      <li><b>무료</b>개인·교육·연구 목적</li>
+    </ul>
+    <img class="shot" src="images/train.png" width="1360" height="820" alt="CAPEK 학습 화면: 병렬 환경 6칸 미리보기, 성공률·보상 곡선, 오른쪽 진행 패널">
+  </div>
+</header>
 
-  <section id="install">
-    <h2>설치</h2>
-    <ol>
-      <li><a href="https://github.com/Dawnilove/CAPEK/releases/latest">Releases</a>에서 <code>CAPEK-Setup.exe</code>를 내려받아요.</li>
-      <li>더블클릭해서 설치해요.</li>
-      <li>"알 수 없는 게시자" 경고가 뜨면 <strong>추가 정보 → 실행</strong>을 눌러요. 코드 서명이 아직 없어요.</li>
-      <li>시작 메뉴에서 <strong>CAPEK</strong>을 열어요.</li>
-    </ol>
-    <p class="note">메모리 8 GB 이상 권장 · 디스크 약 1 GB · 제거해도 학습 기록(<code>문서\CAPEK</code>)은 남아요.</p>
-  </section>
+<main>
+  <div class="wrap">
+    <section id="why">
+      <span class="eyebrow">왜 CAPEK인가요</span>
+      <h2>로봇 학습, 이제 앱 하나로 해 보세요</h2>
+      <p class="sec-lead">모델 파일 쓰기, 학습 코드 짜기, 곡선 따로 띄우기, 기록 뒤지기… 따로 하던 일을 한곳에 모았어요.</p>
+      <div class="grid why">
+        <div class="card"><span class="ico">🧩</span><h3>코드 없이 조립해요</h3><p>링크·관절·바퀴·다리·그리퍼를 카드로 이어 붙여요. 3D 화면에서 바로 확인하고, 잘못 붙이면 이유를 알려 줘요.</p></div>
+        <div class="card"><span class="ico">📈</span><h3>버튼 하나로 학습해요</h3><p>시작을 누르면 강화학습이 돌아요. 진행 패널과 곡선, 환경 미리보기가 실시간으로 움직이고, 창을 닫아도 학습은 계속돼요.</p></div>
+        <div class="card"><span class="ico">🗂</span><h3>기록이 쌓이고 비교돼요</h3><p>모든 학습이 내 PC에 기록으로 남아요. 모니터에서 곡선을 겹쳐 보고, 설정이 어디가 달라졌는지까지 확인해요.</p></div>
+      </div>
+    </section>
 
-  <section id="privacy">
-    <h2>개인정보와 데이터</h2>
-    <p>학습, 조립, 재생은 모두 이 PC 안에서 돌아요. 인터넷은 <strong>AI 조언</strong>을 쓸 때만 써요. 그때 학습 설정과 지표 요약만 Anthropic으로 전송되고, 파일 경로와 API 키는 보내지 않아요. 비용은 본인의 API 계정에 청구되고, 호출 전에 예상 비용을 확인받아요.</p>
-  </section>
+    <section id="compare">
+      <span class="eyebrow">보통은 vs CAPEK</span>
+      <h2>직접 짜고 뒤지던 일을 버튼으로</h2>
+      <div class="vs" role="table" aria-label="보통 방법과 CAPEK 비교">
+        <div class="vs-row vs-head" role="row"><span role="columnheader">하고 싶은 일</span><span class="old" role="columnheader">보통은</span><span></span><span class="new" role="columnheader">CAPEK이면</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">로봇 만들기</span><span class="old" role="cell">URDF·XML을 직접 작성</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">부품 카드로 조립, 3D로 바로 확인</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">과제 정하기</span><span class="old" role="cell">환경 코드를 직접 수정</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">과제를 고르고 목표 범위를 상자로 지정</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">학습 시작</span><span class="old" role="cell">스크립트 작성 · 명령 실행</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">시작 버튼 하나</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">진행 확인</span><span class="old" role="cell">TensorBoard를 따로 띄우기</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">진행 패널·곡선·환경 미리보기</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">학습이 막혔을 때</span><span class="old" role="cell">로그를 읽고 감으로 조정</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">원인 후보 알림과 안전한 자동 조정</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">학습 비교</span><span class="old" role="cell">로그 폴더를 직접 뒤지기</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">모니터에서 겹쳐 보고 설정 차이 확인</span></div>
+        <div class="vs-row" role="row"><span class="task" role="cell">결과 보기</span><span class="old" role="cell">별도 재생 스크립트</span><span class="arrow" aria-hidden="true">→</span><span class="new" role="cell">3D 재생 버튼</span></div>
+      </div>
+    </section>
+
+    <section id="screens">
+      <span class="eyebrow">화면으로 보기</span>
+      <h2>자주 쓰는 화면</h2>
+      <div class="spot">
+        <figure><img class="shot" loading="lazy" src="images/project.png" width="1360" height="820" alt="프로젝트 화면: 지금 열린 설정, 설정 목록, 최근 학습"></figure>
+        <div><h3>🏠 프로젝트</h3><ul>
+          <li>앱을 열면 가장 먼저 보이는 첫 화면</li>
+          <li>설정 목록(내 설정·프리셋)에서 골라 바로 열기</li>
+          <li>최근 학습을 두 번 누르면 모니터에서 열기</li>
+          <li>받침대만 있는 새 조립으로 시작</li>
+        </ul></div>
+      </div>
+      <div class="spot">
+        <figure><img class="shot" loading="lazy" src="images/assembly.png" width="1360" height="820" alt="조립 화면: 왼쪽 부품 트리와 부품 카드, 가운데 3D, 오른쪽 속성"></figure>
+        <div><h3>🧩 조립</h3><ul>
+          <li>붙일 수 있는 부품이 카드로 보이고, 누르면 바로 붙어요</li>
+          <li>고른 부품은 점선 상자로, 작업 부위와 목표는 이름표로 표시</li>
+          <li>크기·질량·관절 한계·토크를 오른쪽에서 조절</li>
+          <li>조립 검사가 학습 가능 여부를 바로 알려 줘요</li>
+        </ul></div>
+      </div>
+      <div class="spot">
+        <figure><img class="shot" loading="lazy" src="images/scene.png" width="1360" height="820" alt="장면 화면: 과제 선택과 목표 배치 범위"></figure>
+        <div><h3>🎯 장면</h3><ul>
+          <li>팔 뻗기·이동·균형·걷기·집어서 옮기기 중에서 과제 선택</li>
+          <li>목표가 나올 범위를 3D 상자로 정하기</li>
+          <li>성공 거리·최대 스텝 같은 성공 조건 조절</li>
+        </ul></div>
+      </div>
+      <div class="spot">
+        <figure><img class="shot" loading="lazy" src="images/settings.png" width="1360" height="820" alt="설정 화면: 알고리즘과 보상·제약 설정"></figure>
+        <div><h3>⚙ 설정</h3><ul>
+          <li>알고리즘(SAC·PPO·TD3)과 학습 스텝, 병렬 환경 수</li>
+          <li>보상과 제약(토크·관절 한계 등)을 항목별로</li>
+          <li>항목마다 툴팁으로 뜻을 설명</li>
+        </ul></div>
+      </div>
+      <div class="spot">
+        <figure><img class="shot" loading="lazy" src="images/train.png" width="1360" height="820" alt="학습 화면: 환경 미리보기 6칸, 성공률·보상 곡선, 진행 패널"></figure>
+        <div><h3>📈 학습</h3><ul>
+          <li>병렬 환경을 칸으로 보는 미리보기(켜고 끌 수 있어요)</li>
+          <li>스텝·처리량·남은 시간·경고를 한곳에</li>
+          <li>성공률과 보상 곡선이 실시간으로</li>
+          <li>중지하면 두뇌와 기록을 저장하고 멈춰요</li>
+        </ul></div>
+      </div>
+      <div class="spot">
+        <figure><img class="shot" loading="lazy" src="images/monitor.png" width="1360" height="820" alt="모니터 화면: 학습 기록 목록과 성공률·보상 비교 그래프"></figure>
+        <div><h3>🗂 모니터</h3><ul>
+          <li>학습 기록을 모아 곡선을 겹쳐 비교</li>
+          <li>설정 비교, 경고·자동 조치 이력, 3D 재생 탭</li>
+          <li>"이 run 설정으로 열기"로 같은 조건에서 다시 시작</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="features">
+      <span class="eyebrow">기능</span>
+      <h2>필요한 건 다 들어 있어요</h2>
+      <div class="group">
+        <h3>만들기 <span>조립 · 과제</span></h3>
+        <div class="grid">
+          <div class="card"><h3>부품 5종 이상</h3><p>링크, 관절 모듈, 바퀴, 다리, 그리퍼, 몸체 등. 부품마다 크기·질량·역할을 정해요.</p></div>
+          <div class="card"><h3>과제 5가지</h3><p>팔 뻗기, 이동, 균형, 걷기, 집어서 옮기기. 목표 범위와 성공 조건을 직접 정해요.</p></div>
+          <div class="card"><h3>조립 검사</h3><p>끊긴 부품, 빠진 역할 같은 문제를 학습 전에 알려 줘요.</p></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>학습하기 <span>학습 · 진단</span></h3>
+        <div class="grid">
+          <div class="card"><h3>알고리즘 3종</h3><p>SAC·PPO·TD3. 병렬 환경으로 CPU에서 돌려요.</p></div>
+          <div class="card"><h3>이어서 학습</h3><p>끝난 학습의 두뇌에서 이어 학습해요. 구조가 다르면 이유를 알려 줘요.</p></div>
+          <div class="card"><h3>자동 진단</h3><p>학습이 막히면 원인 후보를 알려 주고, 안전한 것은 스스로 고쳐요.</p></div>
+          <div class="card"><h3>끄고 켜도 계속</h3><p>창을 닫아도 학습은 계속되고, 다시 열면 이어서 보여 줘요.</p></div>
+        </div>
+      </div>
+      <div class="group">
+        <h3>확인하기 <span>모니터 · 재생</span></h3>
+        <div class="grid">
+          <div class="card"><h3>기록 비교</h3><p>여러 학습을 겹쳐 보고 설정이 어디가 다른지, 조상 run이 무엇인지 확인해요.</p></div>
+          <div class="card"><h3>3D 재생</h3><p>끝난 학습을 3D로 다시 봐요.</p></div>
+          <div class="card"><h3>내 PC에 저장</h3><p>모든 기록은 <code>문서\CAPEK</code>에 저장돼요. 제거해도 남아요.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ai">
+      <span class="eyebrow">AI 조언 (선택)</span>
+      <h2>"왜 학습이 안 되죠?"를 AI에게 물어보세요</h2>
+      <p class="sec-lead">모니터에서 기록을 고르고 <b>AI 조언 받기</b>를 누르면, 분석가 2명이 따로 기록을 보고 <b>의견이 같은 것만</b> 설정 제안으로 보여 줘요.</p>
+      <div class="chat">
+        <div class="bubble">성공률이 40000스텝까지 0%예요. 뭘 바꾸면 돼요?</div>
+        <div class="bubble reply">두 분석이 같은 원인을 짚었어요 → 제안 1건. 새 설정 파일로만 적용되고, 학습은 자동으로 시작하지 않아요.</div>
+      </div>
+      <div class="callout">본인의 Anthropic API 키가 필요하고, 호출 전에 예상 비용(한 번에 약 $0.1~0.3)을 보여 준 뒤 확인을 받아요. 키는 Windows 자격 증명 관리자에 저장하고 파일에는 쓰지 않아요.</div>
+    </section>
+
+    <section id="security">
+      <span class="eyebrow">개인정보와 데이터</span>
+      <h2>안심하고 쓰세요</h2>
+      <div class="grid why">
+        <div class="card"><span class="ico">🔒</span><h3>내 PC 안에서</h3><p>조립, 학습, 재생은 모두 이 PC에서 돌아요. 인터넷은 AI 조언을 쓸 때만 써요.</p></div>
+        <div class="card"><span class="ico">📤</span><h3>보내는 것은 요약만</h3><p>AI 조언을 쓸 때 학습 설정과 지표 요약만 Anthropic으로 가요. 파일 경로와 API 키는 보내지 않아요.</p></div>
+        <div class="card"><span class="ico">🛑</span><h3>자동으로 하지 않아요</h3><p>조언은 참고용이에요. 적용도, 학습 시작도 내가 눌러야만 돼요.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="band">
+    <div class="wrap">
+      <section id="install">
+        <span class="eyebrow">설치</span>
+        <h2>설치파일 하나로 끝나요</h2>
+        <ol class="steps">
+          <li><b>내려받기</b>위의 <a href="https://github.com/Dawnilove/CAPEK/releases/latest/download/CAPEK-Setup.exe">다운로드</a> 버튼으로 <code>CAPEK-Setup.exe</code>를 받아요.</li>
+          <li><b>설치</b>더블클릭해서 설치해요. 관리자 권한은 필요 없어요.<ul><li>"알 수 없는 게시자" 경고가 뜨면 <b>추가 정보 → 실행</b></li></ul></li>
+          <li><b>열기</b>시작 메뉴에서 <b>CAPEK</b>을 열어요. 처음 화면은 프로젝트예요.</li>
+        </ol>
+        <div class="table" style="margin-top:22px"><table>
+          <tr><th>필요한 것</th><td>Windows 10 또는 11, 64비트</td></tr>
+          <tr><th>권장</th><td>메모리 8 GB 이상, 디스크 약 1 GB</td></tr>
+          <tr><th>GPU</th><td>필요 없어요. 3D가 안 되는 PC는 소프트웨어 방식으로 자동 전환해요.</td></tr>
+        </table></div>
+        <p class="note">제거하려면 설정 → 앱에서 CAPEK을 지워요. 학습 기록(<code>문서\CAPEK</code>)은 남아요. 코드 서명이 아직 없어 첫 실행에 경고가 뜰 수 있고, 일부 백신이 새 프로그램을 의심할 수 있어요.</p>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section id="start">
+      <span class="eyebrow">시작하기</span>
+      <h2>세 단계면 첫 학습이 돌아요</h2>
+      <ol class="steps">
+        <li><b>조립</b>프로젝트에서 <b>arm3_reach</b>를 열어요. 조립 탭에서 부품을 바꾸거나 카드를 눌러 붙여요.</li>
+        <li><b>학습</b>학습 탭에서 <b>학습 시작</b>을 눌러요. 곡선과 환경 미리보기가 움직이면 돼요.</li>
+        <li><b>확인</b>끝나면 모니터 탭에서 기록을 고르고, 재생 탭에서 3D로 결과를 봐요.</li>
+      </ol>
+    </section>
+
+    <section id="help">
+      <span class="eyebrow">문제 해결</span>
+      <h2>잘 안 될 때</h2>
+      <details><summary>설치할 때 "알 수 없는 게시자" 경고가 떠요</summary><p>코드 서명이 아직 없어서 나오는 정상 경고예요. <b>추가 정보 → 실행</b>을 누르면 설치돼요. "앱 제어 정책이 차단했다"는 창이 뜨면 <a href="https://github.com/Dawnilove/CAPEK/issues">이슈</a>에 화면 문구를 남겨 주세요.</p></details>
+      <details><summary>3D 화면이 안 나와요</summary><p>GPU가 없거나 드라이버 문제일 때 소프트웨어 방식으로 자동 전환해요. 그래도 안 나오면 <code>문서\CAPEK\logs\gui.log</code>를 이슈에 붙여 주세요. 학습은 3D 없이도 돌아요.</p></details>
+      <details><summary>학습이 너무 느려요</summary><p>학습은 CPU로 해요. 다른 프로그램이 CPU를 많이 쓰면 몇 배 느려질 수 있어요. 설정 탭에서 병렬 환경 수를 줄이거나 학습 스텝을 줄여 보세요.</p></details>
+      <details><summary>기록은 어디에 저장되나요</summary><p><code>문서\CAPEK</code> 폴더예요. <code>runs\</code>(학습 기록과 두뇌), <code>my_configs\</code>(내가 저장한 설정), <code>logs\</code>(로그). 폴더를 바꾸려면 환경변수 <code>CAPEK_DATA_DIR</code>을 설정해요.</p></details>
+      <details><summary>AI 조언 키는 어떻게 넣나요</summary><p>모니터에서 <b>AI 조언 받기</b>를 눌러 안내를 읽고 동의한 뒤 키를 입력해요. 키는 Windows 자격 증명 관리자에 저장되고 파일에는 남지 않아요.</p></details>
+    </section>
+
+    <section id="versions">
+      <span class="eyebrow">버전</span>
+      <h2>예전 버전 받기</h2>
+      <ul id="vlist"><li class="note">목록을 불러오는 중…</li></ul>
+    </section>
+
+    <section class="final">
+      <h2>로봇 학습, 오늘부터 한 앱에서</h2>
+      <p>개인·교육·연구 목적이라면 무료예요.</p>
+      <div class="cta"><a class="btn main" href="https://github.com/Dawnilove/CAPEK/releases/latest/download/CAPEK-Setup.exe">⬇ Windows용 무료 다운로드</a><a class="btn" href="#screens">화면 다시 보기</a></div>
+    </section>
+  </div>
 </main>
 
-<footer><div class="wrap">
-  개인 학습·교육·연구 목적은 무료예요. 소스 코드는 공개하지 않아요. 문의와 오류 보고는 <a href="https://github.com/Dawnilove/CAPEK/issues">이슈</a>에 남겨 주세요.
-</div></footer>
+<footer>
+  <div class="wrap">
+    <a href="https://github.com/Dawnilove/CAPEK">GitHub</a> ·
+    <a href="https://github.com/Dawnilove/CAPEK/releases">릴리스 노트</a> ·
+    <a href="https://github.com/Dawnilove/CAPEK/issues">버그 신고</a> ·
+    <a href="https://github.com/Dawnilove/CAPEK/blob/main/SECURITY.md">보안</a><br>
+    Copyright © 2026 Dawnilove · <a href="https://github.com/Dawnilove/CAPEK/blob/main/LICENSE.txt">사용 허가서</a> · 소스 코드는 공개하지 않아요
+  </div>
+</footer>
+
+<script>
+// 최신 버전 표시와 예전 버전 목록: 릴리스 목록을 읽어 만든다. 실패하면 기본 링크(Releases 페이지)가 남는다.
+function link(text, href) { var a = document.createElement("a"); a.textContent = text; a.href = href; return a; }
+fetch("https://api.github.com/repos/Dawnilove/CAPEK/releases?per_page=100")
+  .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+  .then(function (rels) {
+    rels = rels.filter(function (r) { return !r.draft && !r.prerelease; });
+    document.getElementById("ver").textContent = "최신 버전 " + rels[0].tag_name;
+    var ul = document.getElementById("vlist");
+    ul.textContent = "";
+    rels.forEach(function (rel) {
+      var li = document.createElement("li");
+      var b = document.createElement("b");
+      b.textContent = rel.tag_name;
+      var d = document.createElement("span");
+      d.className = "note";
+      d.textContent = rel.published_at.slice(0, 10);
+      li.append(b, d);
+      var a = rel.assets.find(function (x) { return /Setup.*\.exe$/.test(x.name); });
+      if (a) li.append(link("설치파일", a.browser_download_url));
+      li.append(link("릴리스 노트", rel.html_url));
+      ul.append(li);
+    });
+  })
+  .catch(function () {
+    var ul = document.getElementById("vlist");
+    ul.textContent = "";
+    var li = document.createElement("li");
+    li.append("목록을 불러오지 못했어요. ", link("GitHub Releases에서 보기", "https://github.com/Dawnilove/CAPEK/releases"));
+    ul.append(li);
+  });
+</script>
 </body>
 </html>
