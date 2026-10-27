@@ -15,8 +15,8 @@
   <img src="https://img.shields.io/badge/GPU-%EB%B6%88%ED%95%84%EC%9A%94-2A303C?labelColor=1B1F29&style=for-the-badge" alt="GPU 불필요">
 </p>
 
-
-</p>
+<p align="center">
+  <a href="https://dawnilove.github.io/CAPEK/"><b>⬇ CAPEK-Setup.exe 내려받기</b></a>
 
 > 이 저장소는 **배포용**이에요. 설치파일과 사용 설명만 있고, 소스 코드는 공개하지 않아요.
 
