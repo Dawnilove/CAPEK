@@ -10,13 +10,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Dawnilove/CAPEK/releases/latest"><img src="https://img.shields.io/github/v/release/Dawnilove/CAPEK?label=%EC%B5%9C%EC%8B%A0%20%EB%B2%84%EC%A0%84&labelColor=1B1F29&color=A3E06B&style=for-the-badge" alt="최신 버전"></a>
+  <a href="https://dawnilove.github.io/CAPEK/"><img src="https://img.shields.io/github/v/release/Dawnilove/CAPEK?label=%EC%B5%9C%EC%8B%A0%20%EB%B2%84%EC%A0%84&labelColor=1B1F29&color=A3E06B&style=for-the-badge" alt="최신 버전"></a>
   <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-2A303C?labelColor=1B1F29&style=for-the-badge" alt="Windows 10, 11">
   <img src="https://img.shields.io/badge/GPU-%EB%B6%88%ED%95%84%EC%9A%94-2A303C?labelColor=1B1F29&style=for-the-badge" alt="GPU 불필요">
 </p>
 
 <p align="center">
-  <a href="https://github.com/Dawnilove/CAPEK/releases/latest"><b>⬇ CAPEK-Setup.exe 내려받기</b></a>
+  <a href="https://dawnilove.github.io/CAPEK/"><b>⬇ CAPEK-Setup.exe 내려받기</b></a>
 </p>
 
 > 이 저장소는 **배포용**이에요. 설치파일과 사용 설명만 있고, 소스 코드는 공개하지 않아요.
